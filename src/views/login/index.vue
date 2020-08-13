@@ -7,7 +7,7 @@
               <img src="../../assets/img/logo_index.png" alt="">
           </div>
           <!-- 表单 -->
-          <el-form :model="loginForm" :rules="loginRules" style="margin-top:20px">
+          <el-form ref="formobj" :model="loginForm" :rules="loginRules" style="margin-top:20px">
               <!-- 一个表单域就是一个form-item-->
               <el-form-item prop="mobile">
                   <!-- 手机号 -->
@@ -23,7 +23,7 @@
                    <el-checkbox v-model="loginForm.check">我已阅读并同意你列举出来的<el-link type="primary">霸王条款</el-link></el-checkbox>
               </el-form-item>
               <el-form-item>
-                   <el-button style="width:100%" type="primary">登录</el-button>
+                   <el-button style="width:100%" type="primary" @click="login">登录</el-button>
               </el-form-item>
           </el-form>
       </el-card>
@@ -66,6 +66,23 @@ export default {
         }]
       }
 
+    }
+  },
+  methods: {
+    login () {
+      // this.$refs.formobj 获取到el-form 对象实例
+      this.$refs.formobj.validate((isOk) => {
+        if (isOk) {
+        //   为true 直接调用接口
+          this.$axios({
+            url: '/authorizations',
+            data: this.loginForm,
+            method: 'POST'
+          }).then(res => {
+            console.log(res.data)
+          })
+        }
+      })
     }
   }
 }
