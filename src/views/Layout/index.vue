@@ -51,8 +51,11 @@
         </el-menu-item>
         </el-menu>
       </el-aside>
+      <!-- 上下 -->
        <el-container>
-        <el-header>头部</el-header>
+          <el-header>
+            <layout-header></layout-header>
+          </el-header>
         <el-main>容器</el-main>
   </el-container>
     </el-container>
@@ -60,8 +63,11 @@
 </template>
 
 <script>
+import Header from '../../components/Header'
 export default {
-
+  components: {
+    'layout-header': Header
+  }
 }
 </script>
 
