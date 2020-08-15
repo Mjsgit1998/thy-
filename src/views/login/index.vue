@@ -79,7 +79,15 @@ export default {
             data: this.loginForm,
             method: 'POST'
           }).then(res => {
-            console.log(res.data)
+            // console.log(res.data.data.token)
+            window.localStorage.setItem('user-token', res.data.data.token)
+            // 跳转到主页
+            this.$router.push('/home')
+          }).catch(() => {
+            this.$message({
+              message: '警告哦，您输入的信息有误',
+              type: 'warning'
+            })
           })
         }
       })
