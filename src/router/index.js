@@ -2,8 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '../views/Layout'
 import Login from '../views/login'
-
 import left from '../views/left'
+import Release from '../views/release'
+import Home from '../views/home'
+import Article from '../views/article'
 Vue.use(VueRouter)
 
 const routes = [
@@ -14,10 +16,20 @@ const routes = [
   // 一级路由容器
   {
     path: '/',
-    // name: 'Home',
     component: Layout,
     children: [
       // 默认子路由
+      {
+        path: '',
+        component: Home
+      },
+      {
+        path: '/release',
+        component: Release
+      }, {
+        path: '/article',
+        component: Article
+      }
     ]
   },
   // 一级路由登录页

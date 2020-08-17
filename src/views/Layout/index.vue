@@ -18,32 +18,23 @@
         >
         <!-- 菜单 -->
         <!-- 一级菜单 -->
-         <el-menu-item>
-          <span slot="title">首页</span>
-        </el-menu-item>
+         <el-menu-item index="/">首页</el-menu-item>
         <!-- 二级菜单 -->
         <el-submenu index="1">
-        <template slot="title">
-          <span>内容管理</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item >发布文章</el-menu-item>
-          <el-menu-item >内容列表</el-menu-item>
+        <template slot="title">内容管理</template>
+          <el-menu-item index="/release">发布文章</el-menu-item>
+          <el-menu-item index="/article">内容列表</el-menu-item>
           <el-menu-item >评论列表</el-menu-item>
           <el-menu-item >素材管理</el-menu-item>
-        </el-menu-item-group>
       </el-submenu>
         <!-- 二级菜单 -->
           <el-submenu index="2">
-        <template slot="title">
-          <span>粉丝管理</span>
+        <template slot="title">粉丝管理
         </template>
-        <el-menu-item-group>
           <el-menu-item >图文数据</el-menu-item>
           <el-menu-item >粉丝概况</el-menu-item>
           <el-menu-item >粉丝画像</el-menu-item>
           <el-menu-item >粉丝列表</el-menu-item>
-        </el-menu-item-group>
       </el-submenu>
         <!-- 一级菜单 -->
          <el-menu-item>
@@ -56,7 +47,10 @@
           <el-header>
             <layout-header></layout-header>
           </el-header>
-        <el-main>容器</el-main>
+        <el-main>
+          <!-- 二级路由容器 -->
+          <router-view/>
+        </el-main>
   </el-container>
     </el-container>
   </div>
