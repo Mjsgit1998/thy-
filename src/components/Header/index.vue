@@ -24,7 +24,8 @@
             <el-dropdown-menu>
               <el-dropdown-item>个人信息</el-dropdown-item>
               <el-dropdown-item>git地址</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
+              <!-- 如果咱们想要给组件注册原生的事件使用一个修饰符 .native -->
+              <el-dropdown-item @click.native="onLogout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-col>
@@ -35,7 +36,32 @@
 
 <script>
 export default {
-
+  methods: {
+    onLogout () {
+      // console.log(123)
+    // 写我的退出
+      this.$confirm('你确定要退出吗', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 确认执行
+        // 删除token
+        window.localStorage.removeItem('user-token')
+        // 返回login
+        this.$router.push('/login')
+        this.$message({
+          type: 'success',
+          message: '退出成功!'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消'
+        })
+      })
+    }
+  }
 }
 </script>
 

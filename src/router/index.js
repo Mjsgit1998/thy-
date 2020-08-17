@@ -7,15 +7,18 @@ import left from '../views/left'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    redirect: '/home'
-  },
+  // {
+  //   path: '/',
+  //   redirect: '/home'
+  // },
   // 一级路由容器
   {
-    path: '/home',
-    name: 'Home',
-    component: Layout
+    path: '/',
+    // name: 'Home',
+    component: Layout,
+    children: [
+      // 默认子路由
+    ]
   },
   // 一级路由登录页
   {
@@ -44,7 +47,7 @@ const router = new VueRouter({
 // 参数3： next 是一个方法，用于路由放行
 // 我们要做的就是 判断一下你用户是否处在登录状态，有通过，没有跳到登录
 router.beforeEach((to, from, next) => {
-  // console.log(to)
+  // console.log(from)
   // console.log('所有的页面都要经过')
   // 如果是登录页 直接放行
   if (to.path === '/login') {
