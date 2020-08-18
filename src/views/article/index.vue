@@ -20,8 +20,14 @@
         </el-form-item>
         <el-form-item label="频道列表">
           <el-select placeholder="请选择活动区域" v-model="filterForm.channel_id">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <!-- 下拉列表 会把选中的option的value 同步到数据中-->
+            <el-option label="所有频道" :value="null"></el-option>
+            <el-option
+              :label="channel.name"
+              :value="channel.id"
+              v-for="channel in channels" :key="channel.id"
+              >
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间选择">
@@ -30,7 +36,9 @@
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
-            end-placeholder="结束日期">
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            >
           </el-date-picker>
         </el-form-item>
         <el-form-item>
@@ -141,11 +149,11 @@ export default {
       // 过滤数据的表单
       filterForm: {
         status: null,
-        channel_id: '',
-        begin_pubdate: '',
-        end_pubdate: ''
+        channel_id: null
+        // begin_pubdate: '',
+        // end_pubdate: ''
       },
-      rangeDate: '',
+      rangeDate: [],
       articles: [], // 文章数据列表
       articleStatus: [
         {
@@ -171,12 +179,15 @@ export default {
 
       ],
       totalCount: 0, // 默认总记录数
-      loading: true
+      loading: true,
+      channels: []
     }
   },
 
   created () {
     this.loadArticles()
+    // 加载频道列表
+    this.loadChannels()
   },
 
   methods: {
@@ -201,10 +212,14 @@ export default {
         params: {
           page, // 页码
           per_page: 10, // 每页大小
-          status: this.filterForm.status
+          status: this.filterForm.status, // 文章的状态
+          channel_id: this.filterForm.channel_id, // 频道
+          begin_pubdate: this.rangeDate ? this.rangeDate[0] : null, // 开始时间
+          end_pubdate: this.rangeDate ? this.rangeDate[1] : null// 结束的时间
         }
+
       }).then(res => {
-        // console.log(123)
+        console.log(res)
         this.articles = res.data.data.results
         // 更新总数
         this.totalCount = res.data.data.total_count
@@ -217,6 +232,17 @@ export default {
     onPageChange (page) {
       // 请求加载指定文章列表
       this.loadArticles(page)
+    },
+    loadChannels () {
+      this.$axios({
+        method: 'GET',
+        url: '/channels'
+      }).then(res => {
+        // console.log(res)
+        this.channels = res.data.data.channels
+      }).catch(err => {
+        console.log(err, '获取数据失败')
+      })
     }
   }
 }
