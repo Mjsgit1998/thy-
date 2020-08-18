@@ -119,9 +119,9 @@
         <el-table-column
           prop="address"
           label="操作">
-          <template>
+          <template slot-scope="scope">
              <el-button type="primary" icon="el-icon-edit"></el-button>
-              <el-button type="primary" icon="el-icon-delete"></el-button>
+              <el-button type="primary" icon="el-icon-delete" @click="onDelete(scope.row.id)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -242,6 +242,21 @@ export default {
         this.channels = res.data.data.channels
       }).catch(err => {
         console.log(err, '获取数据失败')
+      })
+    },
+    onDelete (articleId) {
+      this.$axios({
+        method: 'DELETE',
+        // 注意： 接口路径中的 ：target 是一个动态路由参数 ：target 是动态的
+        url: `/articles/${articleId}`,
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem('user-token')}`
+        }
+      }).then(res => {
+        // console.log('成功')
+        this.loadArticles(1)
+      }).catch(err => {
+        console.log(err, '失败')
       })
     }
   }

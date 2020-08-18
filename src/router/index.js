@@ -6,6 +6,27 @@ import left from '../views/left'
 import Release from '../views/release'
 import Home from '../views/home'
 import Article from '../views/article'
+import JSONbig from 'json-bigint'
+import axios from 'axios'
+
+axios.defaults.transformResponse = [function (data, heades) {
+  // console.log(data)
+  // return JSONbig
+  // axios 默认使用 json.parse(data)转为对象,
+  // 这里我们需要手动配置 JSONbig.parse(data)一下
+  // 任何接口都会返回数据
+  // 所有请求接口返回的数据都要 JSONbig.parse(data) 一下
+  // 但是删除返回的是 空数组
+  // 空数据 转 会报错
+  // 说白了当没有响应体的时候 JSONbig.parse(data) 会报错
+  // 把可能会出错的 代码放到try ，把出错之后的处理放到catch里边
+  try {
+    return JSONbig.parse(data)
+  } catch (err) {
+    // 一旦try里边的代码执行引发异常，那么就会进入到catch去执行
+    return {}
+  }
+}]
 Vue.use(VueRouter)
 
 const routes = [
