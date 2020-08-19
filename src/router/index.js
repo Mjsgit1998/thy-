@@ -8,6 +8,7 @@ import Home from '../views/home'
 import Article from '../views/article'
 import JSONbig from 'json-bigint'
 import axios from 'axios'
+import Comment from '../views/comment'
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -87,6 +88,10 @@ const routes = [
       {
         path: '/article',
         component: Article
+      },
+      {
+        path: '/comment',
+        component: Comment
       }
     ]
   },
