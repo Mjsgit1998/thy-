@@ -1,0 +1,45 @@
+<template>
+  <div class="app">
+     
+    <h2> FOOT</h2>  
+    <p>{{message}}</p>
+    <p>{{a}}</p>
+    <!-- <button @click="a=123">修改props</button> -->
+
+    <!-- 正确的方式是 
+    发出通知，让父组件自己改
+    1 给父组件发出一个自定义事件
+     -->
+    <button @click="onClick">修改props</button>
+    </div>
+</template>
+
+<script>
+export default {
+    props: ['a'],
+    data() {
+        return {
+            message: 'Foot message'
+        }
+    },
+    methods: {
+        onClick () {
+            // 说白了就是在子组件调用父组件方法
+            // 1 给父组件发出一个自定义通知
+            // 2 然后监听子组件的 事件
+            // this.$emit('haha')
+            // 也可以传参
+            this.$emit('haha',10)
+
+        }
+    }
+}
+</script>
+
+<style>
+    .app{
+    width: 300px;
+    height: 590px;
+    border: 1px solid #000;
+  }
+</style>

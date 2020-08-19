@@ -1,0 +1,57 @@
+cd<template>
+  <div id="app">
+    <!-- <foot a='b'></foot> -->
+    <!-- 如果绑定的数据改变，那么也将传给子组件 -->
+    <!-- <foot :a='message'></foot> -->
+    <!--单项数据流 props 数据只受父组件影响，反之不会 
+    props 数据只用不改 vue 就是这么设计的
+    在组件只在内部修改，
+    -->
+
+    <!-- 如果真想在子组件里改父组件的值，让父组件自己改 -->
+    <foot
+    :a="message"
+    v-on:haha="onhaha"
+    ></foot>
+    <bar></bar>
+    <number></number>
+  </div>
+</template>
+
+<script>
+// 组件都是私有作用域、
+// 如何在子组件中访问父组件中的数据
+    // 1.在父组件中给子组件传递数据
+    // 2.在子组件中用props接收
+  // 如何在子组件修改父组件中的值
+    // 1 给子组件发一个自定义时间通知
+    // 2父组件监听子组件
+import Foot from './components/Foot'
+import Bar from './components/Bar'
+import number from './components/buttonNumber'
+export default {
+  name: 'App',
+  data() {
+    return {
+      message:'app message'
+    }
+  },
+  components: {
+    "foot": Foot,
+    "bar": Bar,
+    number
+  },
+  methods: {
+    onhaha(data) {
+      // console.log('收到了子组件的哈哈');
+      window.alert(data)
+      this.message = 'Hello'
+
+    }
+  }
+}
+</script>
+
+<style>
+  
+</style>
