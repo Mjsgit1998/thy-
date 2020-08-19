@@ -50,7 +50,7 @@
           </el-header>
         <el-main>
           <!-- 二级路由容器 -->
-          <router-view/>
+          <router-view :key="$route.path"></router-view>
         </el-main>
   </el-container>
     </el-container>

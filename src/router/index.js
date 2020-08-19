@@ -9,6 +9,34 @@ import Article from '../views/article'
 import JSONbig from 'json-bigint'
 import axios from 'axios'
 
+// 添加请求拦截器
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么
+  // 在请求去拦截器 中config 是本次请求的一些相关配置 对象
+  // config 就是最后要发给后台的那个配置对象
+  // 我们可以在拦截器中对congig 进行统一配置 token
+  // console.log('请求拦截器', config)
+  const token = window.localStorage.getItem('user-token')
+  // 统一添加 token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  // return config 是通行的规则
+  return config
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error)
+})
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+  // 对响应数据做点什么
+  return response
+}, function (error) {
+  // 对响应错误做点什么
+  return Promise.reject(error)
+})
+
 axios.defaults.transformResponse = [function (data, heades) {
   // console.log(data)
   // return JSONbig
@@ -47,7 +75,16 @@ const routes = [
       {
         path: '/release',
         component: Release
-      }, {
+      },
+      // 编辑：当从a 路径跳到b俩个路由使用的是同一个组件
+      // 那么这个组件就不会渲染 复用
+      //  正常的路由跳转会销毁，渲染新匹配的组件
+      {
+        path: '/release/:articleId',
+        component: Release
+
+      },
+      {
         path: '/article',
         component: Article
       }

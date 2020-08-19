@@ -2,7 +2,7 @@
   <div class="publish">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>发布文章</span>
+        <span>{{$route.params.articleId? '编辑文章' :'发布文章'}}</span>
       </div>
       <el-form ref="form" :model="article" label-width="80px">
         <el-form-item label="标题">
@@ -69,17 +69,38 @@ export default {
   },
   created () {
     this.loadChannels()
+    // 添加和编辑使用的都是这个组件
+    // 只有编辑的时候，初始化 ，有id 加载文章内容
+    if (this.$route.params.articleId) {
+      this.loadArticles()
+    }
   },
   methods: {
+    loadArticles () {
+      this.$axios({
+        method: 'GET',
+        url: `/articles/${this.$route.params.articleId}`
+      }).then(res => {
+        // console.log(res)
+        this.article = res.data.data
+      })
+    },
     // 点击发布
     onPublish (draft) {
+      if (this.$route.params.articleId) {
+        // 编辑
+        // 调用
+        this.upedArticle(draft)
+      } else {
+        // 请求添加
+        this.addArticle(draft)
+      }
+    },
+    // 添加 发的请求
+    addArticle (draft) {
       this.$axios({
         method: 'POST',
         url: '/articles',
-        headers: {
-          Authorization: `Bearer ${window.localStorage.getItem('user-token')}`
-        },
-        // Query 参数
         params: {
           draft
         },
@@ -88,6 +109,24 @@ export default {
         console.log(res)
       }).catch(err => {
         console.log(err, '发布失败')
+      })
+    },
+    // 编辑
+    upedArticle  (draft) {
+      this.$axios({
+        method: 'PUT',
+        url: `/articles/${this.$route.params.articleId}`,
+        params: {
+          draft
+        },
+        data: this.article
+      }).then(res => {
+        this.$message({
+          type: 'success',
+          message: '更新成功'
+        })
+      }).catch(() => {
+        this.$message.error('更新失败')
       })
     },
     loadChannels () {
