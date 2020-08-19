@@ -71,18 +71,7 @@ export default {
     this.loadChannels()
   },
   methods: {
-
-    loadChannels () {
-      this.$axios({
-        method: 'GET',
-        url: '/channels'
-      }).then(res => {
-        // console.log(res)
-        this.channels = res.data.data.channels
-      }).catch(err => {
-        console.log(err, '获取数据失败')
-      })
-    },
+    // 点击发布
     onPublish (draft) {
       this.$axios({
         method: 'POST',
@@ -100,7 +89,19 @@ export default {
       }).catch(err => {
         console.log(err, '发布失败')
       })
+    },
+    loadChannels () {
+      this.$axios({
+        method: 'GET',
+        url: '/channels'
+      }).then(res => {
+        // console.log(res)
+        this.channels = res.data.data.channels
+      }).catch(err => {
+        console.log(err, '获取数据失败')
+      })
     }
+
   }
 }
 </script>
