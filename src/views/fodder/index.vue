@@ -11,8 +11,26 @@
       <el-radio-button label="全部"></el-radio-button>
       <el-radio-button label="收藏"></el-radio-button>
     </el-radio-group>
-    <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
-
+    <!-- <el-button type="text">操作按钮</el-button> -->
+    <!-- action 上传文件的请求地址
+    on-preview 上传预览事件
+    on-remove 删除事件
+    这个上传组件比较特殊，他会自动帮我们发请求
+    我们只需要把i接口相关的配置给他配好 就可以了
+    它内部的请求不是我们项目中所用的axios
+    请求方式： post
+    手动去配请求头
+     -->
+    <el-upload
+        class="upload-demo"
+        style="float: right; padding: 3px 0"
+        action="http://ttapi.research.itcast.cn/mp/v1_0/user/images"
+        :headers="uploadHeaders"
+        name="image"
+        :on-success="uploadSuccess"
+        >
+        <el-button size="small" type="primary">点击上传</el-button>
+        </el-upload>
     <!-- el-row 行
         gutter 间隔距离
         el-col  列
@@ -53,12 +71,17 @@
 </template>
 
 <script>
+const token = window.localStorage.getItem('user-token')
 export default {
   name: 'MediaINdex',
   data () {
     return {
       images: [],
-      type: '全部'
+      type: '全部',
+      //   给上传组件 使用的请求头
+      uploadHeaders: {
+        Authorization: `Bearer ${token}`
+      }
     }
   },
   computed: {},
@@ -137,6 +160,10 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    uploadSuccess () {
+      // 刷新一下图片
+      this.loadImages(this.type !== '全部')
     }
   }
 }
