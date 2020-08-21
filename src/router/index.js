@@ -9,7 +9,7 @@ import Article from '../views/article'
 import JSONbig from 'json-bigint'
 import axios from 'axios'
 import Comment from '../views/comment'
-
+import Fodder from '../views/fodder'
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
@@ -92,7 +92,11 @@ const routes = [
       {
         path: '/comment',
         component: Comment
+      }, {
+        path: '/fodder',
+        component: Fodder
       }
+
     ]
   },
   // 一级路由登录页
