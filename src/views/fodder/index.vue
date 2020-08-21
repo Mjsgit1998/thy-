@@ -37,7 +37,9 @@
                     <i :class="{
                         'el-icon-star-on': item.is_collected,
                         'el-icon-star-off': !item.is_collected
-                    }"></i>
+                    }"
+                        @click="onCollect(item)"
+                    ></i>
                     <!-- class 本来就是绑定数据字符串 -->
                     <!-- <i :class='item.is_collected ? "el-icon-star-on" : "el-icon-star-off"' ></i> -->
                     <i class="el-icon-delete"></i>
@@ -71,7 +73,6 @@ export default {
         params: {
           collect: isCollect // 是否获取收藏图片
         }
-
       }).then(res => {
         console.log(res)
         this.images = res.data.data.results
@@ -84,6 +85,28 @@ export default {
     // 我们 可以声名一个形参来接收
     onFind (value) {
       this.loadImages(value !== '全部')
+    },
+    // 收藏 和 取消收藏
+    onCollect (item) {
+      // 请求/取消收藏
+      this.$axios({
+        method: 'PUT',
+        url: `/user/images/${item.id}`,
+        data: {
+          collect: !item.is_collected
+        }
+      }).then(res => {
+        // console.log(res)
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        })
+        // 更新一下视图
+        item.is_collected = !item.is_collected
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('操作失败')
+      })
     }
   }
 }
