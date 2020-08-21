@@ -4,9 +4,12 @@
     <span>图片管理</span>
   </div>
 
-  <el-radio-group>
-      <el-radio-button label="上海"></el-radio-button>
-      <el-radio-button label="北京"></el-radio-button>
+    <el-radio-group
+        v-model="type"
+        @change="onFind"
+    >
+      <el-radio-button label="全部"></el-radio-button>
+      <el-radio-button label="收藏"></el-radio-button>
     </el-radio-group>
     <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
 
@@ -50,7 +53,8 @@ export default {
   name: 'MediaINdex',
   data () {
     return {
-      images: []
+      images: [],
+      type: '全部'
     }
   },
   computed: {},
@@ -60,10 +64,13 @@ export default {
     this.loadImages()
   },
   methods: {
-    loadImages () {
+    loadImages (isCollect = false) {
       this.$axios({
         method: 'GET',
-        url: '/user/images'
+        url: '/user/images',
+        params: {
+          collect: isCollect // 是否获取收藏图片
+        }
 
       }).then(res => {
         console.log(res)
@@ -71,6 +78,12 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    // 该函数 是radio 的change 事件处理函数
+    //  事件有个回调 这个回调参数：radio label 值
+    // 我们 可以声名一个形参来接收
+    onFind (value) {
+      this.loadImages(value !== '全部')
     }
   }
 }
