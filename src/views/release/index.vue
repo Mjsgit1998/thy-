@@ -81,7 +81,7 @@ export default {
         method: 'GET',
         url: `/articles/${this.$route.params.articleId}`
       }).then(res => {
-        // console.log(res)
+        console.log(res)
         this.article = res.data.data
       })
     },

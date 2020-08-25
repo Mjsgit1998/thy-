@@ -15,11 +15,11 @@
            <el-tooltip class="item" effect="dark" content="消息" placement="top">
            <span>消息</span>
           </el-tooltip>
-          <img src="../../assets/img/avatar.jpg" alt="">
+          <img width="50" :src="user.photo" alt="">
           <!-- 下拉菜单 -->
           <el-dropdown trigger='click'>
             <span>
-              水若寒宇
+              {{user.name}}
             </span>
             <el-dropdown-menu>
               <el-dropdown-item>个人信息</el-dropdown-item>
@@ -35,7 +35,26 @@
 </template>
 
 <script>
+// import eventBus from '@/utils/event-bus.js'
+import eventBus from '../../views/utils/event-bus'
 export default {
+  data () {
+    return {
+      user: {
+        name: '',
+        photo: ''
+      }
+    }
+  },
+  created () {
+    this.userHeader()
+    // 在初始化中要监听自定义事件
+    eventBus.$on('upload', user => {
+      // console.log(123)
+      this.user.name = user.name
+      this.user.photo = user.photo
+    })
+  },
   methods: {
     onLogout () {
       // console.log(123)
@@ -60,7 +79,19 @@ export default {
           message: '取消'
         })
       })
+    },
+    userHeader () {
+      this.$axios({
+        method: 'GET',
+        url: '/user/profile'
+      }).then(res => {
+        // console.log(res)
+        this.user = res.data.data
+      }).catch(err => {
+        console.log(err)
+      })
     }
+
   }
 }
 </script>

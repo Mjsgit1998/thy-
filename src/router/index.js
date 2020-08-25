@@ -10,6 +10,7 @@ import JSONbig from 'json-bigint'
 import axios from 'axios'
 import Comment from '../views/comment'
 import Fodder from '../views/fodder'
+import Account from '../views/account'
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
@@ -95,6 +96,9 @@ const routes = [
       }, {
         path: '/fodder',
         component: Fodder
+      }, {
+        path: '/account',
+        component: Account
       }
 
     ]
@@ -125,23 +129,5 @@ const router = new VueRouter({
 // 参数2：  from 表示来自哪里的路由信息
 // 参数3： next 是一个方法，用于路由放行
 // 我们要做的就是 判断一下你用户是否处在登录状态，有通过，没有跳到登录
-router.beforeEach((to, from, next) => {
-  // console.log(from)
-  // console.log('所有的页面都要经过')
-  // 如果是登录页 直接放行
-  if (to.path === '/login') {
-    next()
-    return
-  }
-  // 非登录页
-  // 判断是否有 token
-  const token = window.localStorage.getItem('user-token')
-  if (token) {
-    next()
-  } else {
-    // 没有就跳回登录页
-    next('/login')
-  }
-})
 
 export default router

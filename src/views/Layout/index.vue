@@ -38,7 +38,7 @@
           <el-menu-item >粉丝列表</el-menu-item>
       </el-submenu>
         <!-- 一级菜单 -->
-         <el-menu-item>
+         <el-menu-item index="/account">
           <span slot="title">账户信息</span>
         </el-menu-item>
         </el-menu>
