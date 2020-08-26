@@ -11,6 +11,8 @@ import axios from 'axios'
 import Comment from '../views/comment'
 import Fodder from '../views/fodder'
 import Account from '../views/account'
+import Echarts from '../views/echarts'
+import Components from '../views/components'
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
@@ -99,6 +101,12 @@ const routes = [
       }, {
         path: '/account',
         component: Account
+      }, {
+        path: '/echarts',
+        component: Echarts
+      }, {
+        path: '/components',
+        component: Components
       }
 
     ]

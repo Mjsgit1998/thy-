@@ -25,10 +25,30 @@
           </el-select>
         </el-form-item>
         <el-form-item label="封面">
-          <el-radio-group v-model="article.cover">
-            <!-- <el-radio label=></el-radio>
-            <el-radio label="线下场地免费"></el-radio> -->
+          <el-radio-group v-model="article.cover.type">
+            <el-radio :label='1'>单图</el-radio>
+            <el-radio :label='3'>三图</el-radio>
+            <el-radio :label='0'>无图</el-radio>
+            <el-radio :label='-1'>自动</el-radio>
           </el-radio-group>
+            <template v-if="article.cover.type !== -1">
+              <el-row>
+                <el-col :span="6"
+                v-for="item in article.cover.type"
+                :key="item"
+                >
+                <!--
+                  :active,cover,in=mage[0], 1
+                  :active,cover,in=mage[1], 2
+                  :active,cover,in=mage[2], 3
+                  它选中的图片同步到数组中的第几项
+
+                 -->
+                  <upload-images  v-model="article.cover.images[item - 1]"></upload-images>
+                </el-col>
+              </el-row>
+                  <!-- <upload-images></upload-images> -->
+            </template>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onPublish(false)">发表</el-button>
@@ -45,13 +65,14 @@ import VueQuillEditor, { quillEditor } from 'vue-quill-editor'
 import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
-
+import components from '../components'
 Vue.use(VueQuillEditor /* { default global options } */)
 
 export default {
   name: 'PublishArticle',
   components: {
-    quillEditor
+    quillEditor,
+    'upload-images': components
   },
   data () {
     return {
